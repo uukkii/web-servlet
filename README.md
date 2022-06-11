@@ -2,6 +2,27 @@
 
 ## CRUD
 
+v. 2.1 Решение исправлено.
+
+Изменен метод save() класса PostRepository:
+
+```
+    public Post save(Post savePost) {
+        if (savePost.getId() == 0 || !allPosts.containsKey(savePost.getId())) {
+            long id = counter.incrementAndGet();
+            savePost.setId(id);
+            allPosts.put(id, savePost);
+        } else if (savePost.getId() != 0) {
+            allPosts.replace(savePost.getId(), savePost);
+        }
+        return savePost;
+    }
+```
+
+- Добавлена проверка на наличие id сохраняемого post в репозитории allPost;
+- Исправлен код для обновления post (в случае, если id сохраняемого post != 0):
+вместо сохранения id в переменную и изменения методом put, теперь применяется метод replace, принимающий id сохраняемого поста и сам пост.
+
 v. 2.0 Задание полность переделано.
 
 Описание решения:

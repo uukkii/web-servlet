@@ -27,13 +27,12 @@ public class PostRepository {
     }
 
     public Post save(Post savePost) {
-        if (savePost.getId() == 0) {
+        if (savePost.getId() == 0 || !allPosts.containsKey(savePost.getId())) {
             long id = counter.incrementAndGet();
             savePost.setId(id);
             allPosts.put(id, savePost);
         } else if (savePost.getId() != 0) {
-            Long currentId = savePost.getId();
-            allPosts.put(currentId, savePost);
+            allPosts.replace(savePost.getId(), savePost);
         }
         return savePost;
     }
