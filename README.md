@@ -2,7 +2,27 @@
 
 ## CRUD
 
-v. 2.1 Решение исправлено.
+**v. 2.2 Решение исправлено.**
+
+Изменен метод save() класса PostRepository:
+
+```
+    public Post save(Post savePost) {
+        long checkId = savePost.getId();
+        if (checkId == 0) {
+            long id = counter.incrementAndGet();
+            savePost.setId(id);
+            allPosts.put(id, savePost);
+        } else if (!allPosts.containsKey(checkId)) {
+            allPosts.put(checkId, savePost);
+        } else {
+            allPosts.replace(checkId, savePost);
+        }
+        return savePost;
+    }
+```
+
+**v. 2.1 Решение исправлено.**
 
 Изменен метод save() класса PostRepository:
 
@@ -23,7 +43,7 @@ v. 2.1 Решение исправлено.
 - Исправлен код для обновления post (в случае, если id сохраняемого post != 0):
 вместо сохранения id в переменную и изменения методом put, теперь применяется метод replace, принимающий id сохраняемого поста и сам пост.
 
-v. 2.0 Задание полность переделано.
+**v. 2.0 Задание полность переделано.**
 
 Описание решения:
 

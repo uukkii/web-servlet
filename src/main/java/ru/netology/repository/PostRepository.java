@@ -26,13 +26,17 @@ public class PostRepository {
         return Optional.ofNullable(allPosts.get(id));
     }
 
+
     public Post save(Post savePost) {
-        if (savePost.getId() == 0 || !allPosts.containsKey(savePost.getId())) {
+        long checkId = savePost.getId();
+        if (checkId == 0) {
             long id = counter.incrementAndGet();
             savePost.setId(id);
             allPosts.put(id, savePost);
-        } else if (savePost.getId() != 0) {
-            allPosts.replace(savePost.getId(), savePost);
+        } else if (!allPosts.containsKey(checkId)) {
+            allPosts.put(checkId, savePost);
+        } else {
+            allPosts.replace(checkId, savePost);
         }
         return savePost;
     }
