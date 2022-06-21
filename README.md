@@ -2,6 +2,32 @@
 
 ## CRUD
 
+**v. 2.3 Решение исправлено.**
+
+Изменен метод save() класса PostRepository:
+```
+    public Post save(Post savePost) {
+        long checkId = savePost.getId();
+        if (checkId == 0) {
+            long id = counter.incrementAndGet();
+            while (allPosts.containsKey(id)) {
+                id = counter.incrementAndGet();
+            }
+            savePost.setId(id);
+            allPosts.put(id, savePost);
+        } else if (!allPosts.containsKey(checkId)) {
+            allPosts.put(checkId, savePost);
+        } else {
+            allPosts.replace(checkId, savePost);
+        }
+        return savePost;
+    }
+```
+
+После поступления POST-запроса с id 0, счетчик увеличивается, после чего в цикле проверяется
+на наличие такого id в списке всех постов. Если такой id уже существует, счетчик увеличивается вновь. 
+После того, как будет найдет ближайший неиспользуемый id, он будет присвоен новому посту.
+
 **v. 2.2 Решение исправлено.**
 
 Изменен метод save() класса PostRepository:
