@@ -32,6 +32,9 @@ public class PostRepository {
         long checkId = savePost.getId();
         if (checkId == 0) {
             long id = counter.incrementAndGet();
+            while (allPosts.containsKey(id)) {
+                id = counter.incrementAndGet();
+            }
             savePost.setId(id);
             allPosts.put(id, savePost);
         } else if (!allPosts.containsKey(checkId)) {
